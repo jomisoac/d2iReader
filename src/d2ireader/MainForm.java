@@ -5,11 +5,14 @@
  */
 package d2ireader;
 
+import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.Vector;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -45,7 +48,7 @@ public class MainForm extends javax.swing.JFrame {
                 Point point = e.getPoint();
                 int row = table.rowAtPoint(point);
                 if (e.getClickCount() == 2) {
-                    
+                    form.rutaArchivo = archivo.getAbsolutePath();
                     form.txtCodigo.setText((String) jTableDatos.getValueAt(jTableDatos.getSelectedRow(), 0).toString());
                     form.txtTexo.setText((String) jTableDatos.getValueAt(jTableDatos.getSelectedRow(), 1));
                     
@@ -57,6 +60,15 @@ public class MainForm extends javax.swing.JFrame {
                 }
             }
           });
+    }
+    
+    @Override
+    public Image getIconImage() {
+        Image retValue = Toolkit.getDefaultToolkit().
+         getImage(ClassLoader.getSystemResource("icono/icono.png"));
+
+
+        return retValue;
     }
 
     /**
@@ -79,6 +91,7 @@ public class MainForm extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("D2iReader");
+        setIconImage(getIconImage());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 

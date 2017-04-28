@@ -5,6 +5,13 @@
  */
 package d2ireader;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
@@ -13,7 +20,7 @@ import javax.swing.JTextField;
  * @author ADMIN
  */
 public class FormEditar extends javax.swing.JFrame {
-
+    public String rutaArchivo;
     /**
      * Creates new form FormEditar
      */
@@ -54,6 +61,11 @@ public class FormEditar extends javax.swing.JFrame {
         jScrollPane1.setViewportView(txtTexo);
 
         btnSave.setText("Guardar");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         btnCerar.setText("Cerrar");
         btnCerar.addActionListener(new java.awt.event.ActionListener() {
@@ -108,6 +120,10 @@ public class FormEditar extends javax.swing.JFrame {
     private void btnCerarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerarActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnCerarActionPerformed
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        
+    }//GEN-LAST:event_btnSaveActionPerformed
 
 //    public JTextField getTxtCodigo() { 
 //        return txtCodigo; 
