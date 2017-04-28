@@ -182,7 +182,9 @@ public class Reader {
 
         for (int i = 0; i < len; ++i) {
             sb.append((char) buf.getUnsigned());
+            
         }
+        
         return sb.toString();
     }
 }

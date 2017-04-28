@@ -181,7 +181,7 @@ public class MainForm extends javax.swing.JFrame {
             while (i <= 1000445) {
                 if(a.getText(i) != null){
                     fila[0] = i;
-                    fila[1] = a.getText(i);
+                    fila[1] = new String(a.getText(i).getBytes("ISO-8859-1"), "UTF-8");
                     dtm.addRow ( fila );
 //                    //Copio un valor a la celda 
 //                    jTableDatos.setValueAt(a.getText(i), 0, i);
