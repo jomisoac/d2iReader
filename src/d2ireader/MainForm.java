@@ -163,28 +163,26 @@ public class MainForm extends javax.swing.JFrame {
         // muestra el cuadro de diálogo de archivos, para que el usuario pueda elegir el archivo a abrir
         JFileChooser selectorArchivos = new JFileChooser();
         selectorArchivos.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        selectorArchivos.setDialogTitle("Seleccione el archivo 2di que desea editar");
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos d2i", "d2i");
         selectorArchivos.setFileFilter(filtro);
-        // indica cual fue la accion de usuario sobre el jfilechooser
-        int resultado = selectorArchivos.showOpenDialog(this);
-        File archivo = selectorArchivos.getSelectedFile(); // obtiene el archivo seleccionado
-        // muestra error si es inválido
-        if ((archivo == null) || (archivo.getName().equals(""))) {
-         JOptionPane.showMessageDialog(this, "Nombre de archivo inválido", "Nombre de archivo inválido", JOptionPane.ERROR_MESSAGE);
-        } // fin de if
-        
-        Reader a = new Reader(archivo.getAbsolutePath()) {};
-        DefaultTableModel dtm = (DefaultTableModel) jTableDatos.getModel();
-        Object [] fila = new Object[2];
-        try {
+        try{
+            // indica cual fue la accion de usuario sobre el jfilechooser
+            int resultado = selectorArchivos.showOpenDialog(this);
+            File archivo = selectorArchivos.getSelectedFile(); // obtiene el archivo seleccionado
+            // muestra error si es inválido
+            if ((archivo == null) || (archivo.getName().equals(""))) {
+                JOptionPane.showMessageDialog(this, "Nombre de archivo inválido", "Nombre de archivo inválido", JOptionPane.ERROR_MESSAGE);
+            } // fin de if
+            Reader a = new Reader(archivo.getAbsolutePath()) {};
+            DefaultTableModel dtm = (DefaultTableModel) jTableDatos.getModel();
+            Object [] fila = new Object[2];
             int i = 1;
             while (i <= 1000445) {
                 if(a.getText(i) != null){
                     fila[0] = i;
                     fila[1] = new String(a.getText(i).getBytes("ISO-8859-1"), "UTF-8");
                     dtm.addRow ( fila );
-//                    //Copio un valor a la celda 
-//                    jTableDatos.setValueAt(a.getText(i), 0, i);
 //                    //Refresco la Tabla 
                     jTableDatos.paintImmediately(jTableDatos.getX(),jTableDatos.getY(), jTableDatos.getWidth(), jTableDatos.getHeight());
                 }else{
@@ -196,8 +194,10 @@ public class MainForm extends javax.swing.JFrame {
             btnRefreshFile.setEnabled(true);
             btnChargerUI.setEnabled(true);
             jTableDatos.setEnabled(true);
-        }catch (Exception ex) {
+        } catch(Exception ex){
+            
         }
+        
     }//GEN-LAST:event_btnOpenFileActionPerformed
 
     private void txtSearchItemKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSearchItemKeyTyped
