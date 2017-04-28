@@ -52,6 +52,7 @@ public class MainForm extends javax.swing.JFrame {
                 Point point = e.getPoint();
                 int row = table.rowAtPoint(point);
                 if (e.getClickCount() == 2) {
+                    form.datosArchivo = a;
                     form.rutaArchivo = archivo.getAbsolutePath();
                     form.txtCodigo.setText((String) jTableDatos.getValueAt(jTableDatos.getSelectedRow(), 0).toString());
                     form.txtTexo.setText((String) jTableDatos.getValueAt(jTableDatos.getSelectedRow(), 1));
@@ -273,34 +274,36 @@ public class MainForm extends javax.swing.JFrame {
 
     private void btnChargerUIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChargerUIActionPerformed
         DefaultTableModel tb = (DefaultTableModel) jTableDatos.getModel();
-        a = new Reader(archivo.getAbsolutePath()) {};
         int t = jTableDatos.getRowCount()-1;
         Object [] fila = new Object[2];
-        for (int i = t; i >= 0; i--) {           
-            tb.removeRow(tb.getRowCount()-1);
-        } 
-        a._aLang.entrySet().stream().forEach((entry) -> {
-            fila[0] = entry.getKey();
+//        for (int i = t; i >= 0; i--) {           
+//            tb.removeRow(tb.getRowCount()-1);
+//        }
+tb.setRowCount(0);
+a._aLang.entrySet().stream().forEach((entry) -> {
+    fila[0] = entry.getKey();
+    
             try {
                 fila[1] = new String(entry.getValue().getBytes("ISO-8859-1"), "UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
             }
-            dtm.addRow (fila);
-            //Refresco la Tabla 
-            jTableDatos.paintImmediately(jTableDatos.getX(),jTableDatos.getY(), jTableDatos.getWidth(), jTableDatos.getHeight());
+    
+    dtm.addRow (fila);
+    //Refresco la Tabla
+    jTableDatos.paintImmediately(jTableDatos.getX(),jTableDatos.getY(), jTableDatos.getWidth(), jTableDatos.getHeight());
 //            System.out.println(entry.getKey() + " " + entry.getValue());
-        });
+});
     }//GEN-LAST:event_btnChargerUIActionPerformed
 
     private void btnRefreshFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshFileActionPerformed
         DefaultTableModel tb = (DefaultTableModel) jTableDatos.getModel();
         int t = jTableDatos.getRowCount()-1;
-        a = new Reader(archivo.getAbsolutePath()) {};
         Object [] fila = new Object[2];
-        for (int i = t; i >= 0; i--) {           
-            tb.removeRow(tb.getRowCount()-1);
-        } 
+        
+//        for (int i = t; i >= 0; i--) {           
+//            tb.removeRow(tb.getRowCount()-1);
+//        } 
             int i = 1;
             while (i <= 1000445) {
                 if(a.getText(i) != null){

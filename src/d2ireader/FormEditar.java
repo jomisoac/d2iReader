@@ -21,6 +21,7 @@ import javax.swing.JTextField;
  */
 public class FormEditar extends javax.swing.JFrame {
     public String rutaArchivo;
+    public Reader datosArchivo;
     /**
      * Creates new form FormEditar
      */
@@ -122,7 +123,7 @@ public class FormEditar extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCerarActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        
+        datosArchivo.setEntry(txtCodigo.getText(), txtTexo.getText());
     }//GEN-LAST:event_btnSaveActionPerformed
 
 //    public JTextField getTxtCodigo() { 
