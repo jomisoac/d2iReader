@@ -11,7 +11,10 @@ import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -34,6 +37,7 @@ public class MainForm extends javax.swing.JFrame {
     private TableRowSorter trsFiltro;
     public File archivo;
     public DefaultTableModel dtm;
+    private Reader a;
     FormEditar form = new FormEditar();
     /**
      * Creates new form MainForm
@@ -104,9 +108,19 @@ public class MainForm extends javax.swing.JFrame {
 
         btnChargerUI.setText("Cargar UI");
         btnChargerUI.setEnabled(false);
+        btnChargerUI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnChargerUIActionPerformed(evt);
+            }
+        });
 
-        btnRefreshFile.setText("Refrescar tabla");
+        btnRefreshFile.setText("Mostrar textos");
         btnRefreshFile.setEnabled(false);
+        btnRefreshFile.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefreshFileActionPerformed(evt);
+            }
+        });
 
         txtSearchItem.setEnabled(false);
         txtSearchItem.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -217,7 +231,7 @@ public class MainForm extends javax.swing.JFrame {
             if ((archivo == null) || (archivo.getName().equals(""))) {
                 JOptionPane.showMessageDialog(this, "Nombre de archivo inválido", "Nombre de archivo inválido", JOptionPane.ERROR_MESSAGE);
             } // fin de if
-            Reader a = new Reader(archivo.getAbsolutePath()) {};
+            a = new Reader(archivo.getAbsolutePath()) {};
             dtm = (DefaultTableModel) jTableDatos.getModel();
             Object [] fila = new Object[2];
             int i = 1;
@@ -256,6 +270,55 @@ public class MainForm extends javax.swing.JFrame {
         jTableDatos.setRowSorter(trsFiltro);
 
     }//GEN-LAST:event_txtSearchItemKeyTyped
+
+    private void btnChargerUIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChargerUIActionPerformed
+        DefaultTableModel tb = (DefaultTableModel) jTableDatos.getModel();
+        a = new Reader(archivo.getAbsolutePath()) {};
+        int t = jTableDatos.getRowCount()-1;
+        Object [] fila = new Object[2];
+        for (int i = t; i >= 0; i--) {           
+            tb.removeRow(tb.getRowCount()-1);
+        } 
+        a._aLang.entrySet().stream().forEach((entry) -> {
+            fila[0] = entry.getKey();
+            try {
+                fila[1] = new String(entry.getValue().getBytes("ISO-8859-1"), "UTF-8");
+            } catch (UnsupportedEncodingException ex) {
+                Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            dtm.addRow (fila);
+            //Refresco la Tabla 
+            jTableDatos.paintImmediately(jTableDatos.getX(),jTableDatos.getY(), jTableDatos.getWidth(), jTableDatos.getHeight());
+//            System.out.println(entry.getKey() + " " + entry.getValue());
+        });
+    }//GEN-LAST:event_btnChargerUIActionPerformed
+
+    private void btnRefreshFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefreshFileActionPerformed
+        DefaultTableModel tb = (DefaultTableModel) jTableDatos.getModel();
+        int t = jTableDatos.getRowCount()-1;
+        a = new Reader(archivo.getAbsolutePath()) {};
+        Object [] fila = new Object[2];
+        for (int i = t; i >= 0; i--) {           
+            tb.removeRow(tb.getRowCount()-1);
+        } 
+            int i = 1;
+            while (i <= 1000445) {
+                if(a.getText(i) != null){
+                    fila[0] = i;
+                    try {
+                        fila[1] = new String(a.getText(i).getBytes("ISO-8859-1"), "UTF-8");
+                    } catch (UnsupportedEncodingException ex) {
+                        Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    dtm.addRow ( fila );
+//                    //Refresco la Tabla 
+                    jTableDatos.paintImmediately(jTableDatos.getX(),jTableDatos.getY(), jTableDatos.getWidth(), jTableDatos.getHeight());
+                }else{
+
+                }
+                i++;
+            }
+    }//GEN-LAST:event_btnRefreshFileActionPerformed
 
     public void filtro() {
         trsFiltro.setRowFilter(RowFilter.regexFilter(txtSearchItem.getText(), 0));
