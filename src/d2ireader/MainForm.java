@@ -5,13 +5,19 @@
  */
 package d2ireader;
 
+import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.Vector;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.RowFilter;
+import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
@@ -23,11 +29,34 @@ import javax.swing.table.TableRowSorter;
 public class MainForm extends javax.swing.JFrame {
 
     private TableRowSorter trsFiltro;
+    public File archivo;
+    public DefaultTableModel dtm;
+    FormEditar form = new FormEditar();
     /**
      * Creates new form MainForm
      */
     public MainForm() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        jTableDatos.addMouseListener( new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                JTable table =(JTable) e.getSource();
+                Point point = e.getPoint();
+                int row = table.rowAtPoint(point);
+                if (e.getClickCount() == 2) {
+                    
+                    form.txtCodigo.setText((String) jTableDatos.getValueAt(jTableDatos.getSelectedRow(), 0).toString());
+                    form.txtTexo.setText((String) jTableDatos.getValueAt(jTableDatos.getSelectedRow(), 1));
+                    
+                    form.setVisible(true);
+                    form.setLocationRelativeTo(null);
+                    form.setDefaultCloseOperation(form.EXIT_ON_CLOSE); 
+                    
+                    System.out.println(jTableDatos.getValueAt(jTableDatos.getSelectedRow(), 0)+" "+jTableDatos.getValueAt(jTableDatos.getSelectedRow(), 1));
+                }
+            }
+          });
     }
 
     /**
@@ -49,6 +78,7 @@ public class MainForm extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("D2iReader");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
@@ -169,13 +199,13 @@ public class MainForm extends javax.swing.JFrame {
         try{
             // indica cual fue la accion de usuario sobre el jfilechooser
             int resultado = selectorArchivos.showOpenDialog(this);
-            File archivo = selectorArchivos.getSelectedFile(); // obtiene el archivo seleccionado
+            archivo = selectorArchivos.getSelectedFile(); // obtiene el archivo seleccionado
             // muestra error si es inválido
             if ((archivo == null) || (archivo.getName().equals(""))) {
                 JOptionPane.showMessageDialog(this, "Nombre de archivo inválido", "Nombre de archivo inválido", JOptionPane.ERROR_MESSAGE);
             } // fin de if
             Reader a = new Reader(archivo.getAbsolutePath()) {};
-            DefaultTableModel dtm = (DefaultTableModel) jTableDatos.getModel();
+            dtm = (DefaultTableModel) jTableDatos.getModel();
             Object [] fila = new Object[2];
             int i = 1;
             while (i <= 1000445) {
@@ -249,6 +279,11 @@ public class MainForm extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                try {
+                    UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 new MainForm().setVisible(true);
             }
         });
