@@ -22,8 +22,10 @@ public class D2iReader {
 
         System.out.println("*****************Langs Party*************************\n");
 
-        for (int i = 1; i <= 1000445; i++) {
+        int i = 1;
+        while (a.getText(i) != null) {
             System.out.println(i+" "+a.getText(i));
+            i++;
         }
         
 //        int i = 1;
