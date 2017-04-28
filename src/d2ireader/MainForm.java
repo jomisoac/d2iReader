@@ -217,6 +217,8 @@ public class MainForm extends javax.swing.JFrame {
     public void filtro() {
         trsFiltro.setRowFilter(RowFilter.regexFilter(txtSearchItem.getText(), 0));
     }
+    
+    
     /**
      * @param args the command line arguments
      */
